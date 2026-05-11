@@ -1,0 +1,369 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/* ==========================================================================
+   Premio Di Nicola — design system "Quaderno"
+   Italian school notebook: quadretti grid, Bic blu, saffron, coral, mint.
+   ========================================================================== */
+
+@theme inline {
+  /* Type tokens */
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-hand: var(--font-caveat), "Bradley Hand", cursive;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", monospace;
+
+  /* Map shadcn surface tokens to our palette */
+  --color-background: var(--paper);
+  --color-foreground: var(--ink);
+  --color-card: var(--paper);
+  --color-card-foreground: var(--ink);
+  --color-popover: var(--paper);
+  --color-popover-foreground: var(--ink);
+  --color-primary: var(--blu);
+  --color-primary-foreground: var(--paper);
+  --color-secondary: var(--paper-tint);
+  --color-secondary-foreground: var(--ink);
+  --color-muted: var(--paper-tint);
+  --color-muted-foreground: var(--ink-mute);
+  --color-accent: var(--saffron);
+  --color-accent-foreground: var(--ink);
+  --color-destructive: var(--corallo-deep);
+  --color-border: oklch(0.46 0.21 257 / 0.18);
+  --color-input: oklch(0.46 0.21 257 / 0.30);
+  --color-ring: var(--blu);
+
+  /* Semantic palette */
+  --color-paper: var(--paper);
+  --color-paper-tint: var(--paper-tint);
+  --color-paper-warm: var(--paper-warm);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-mute: var(--ink-mute);
+  --color-blu: var(--blu);
+  --color-blu-deep: var(--blu-deep);
+  --color-blu-soft: var(--blu-soft);
+  --color-saffron: var(--saffron);
+  --color-saffron-deep: var(--saffron-deep);
+  --color-corallo: var(--corallo);
+  --color-corallo-deep: var(--corallo-deep);
+  --color-menta: var(--menta);
+  --color-menta-deep: var(--menta-deep);
+  --color-rosa: var(--rosa);
+  --color-rosa-deep: var(--rosa-deep);
+
+  /* Prize aliases (preserve old class names so data flows untouched) */
+  --color-prize-rosa: var(--rosa);
+  --color-prize-imprenditorialita: var(--corallo);
+  --color-prize-mentoraggio: var(--blu);
+  --color-prize-ringraziamenti: var(--menta-deep);
+
+  --radius-sm: 0.4rem;
+  --radius-md: 0.65rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.4rem;
+  --radius-2xl: 1.8rem;
+  --radius-3xl: 2.4rem;
+}
+
+:root {
+  /* — Paper — clean cool white + subtle alt surfaces */
+  --paper:        oklch(0.985 0.004 240);
+  --paper-tint:   oklch(0.965 0.014 244);
+  --paper-warm:   oklch(0.97  0.024 92);
+
+  /* — Ink — deep blue-black, like dried Bic ink */
+  --ink:          oklch(0.20 0.05 262);
+  --ink-soft:     oklch(0.36 0.04 262);
+  --ink-mute:     oklch(0.55 0.035 262);
+
+  /* — Bic blu — primary brand */
+  --blu:          oklch(0.50 0.20 257);
+  --blu-deep:     oklch(0.36 0.22 258);
+  --blu-soft:     oklch(0.92 0.05 250);
+
+  /* — Saffron highlighter */
+  --saffron:      oklch(0.88 0.18 92);
+  --saffron-deep: oklch(0.74 0.19 78);
+
+  /* — Coral energy */
+  --corallo:      oklch(0.66 0.21 32);
+  --corallo-deep: oklch(0.52 0.22 28);
+
+  /* — Mint success */
+  --menta:        oklch(0.80 0.13 162);
+  --menta-deep:   oklch(0.55 0.16 158);
+
+  /* — Rosa (Incentivo Rosa) */
+  --rosa:         oklch(0.70 0.20 358);
+  --rosa-deep:    oklch(0.55 0.22 0);
+
+  /* Quadretti line color */
+  --quadretti:    oklch(0.50 0.20 257 / 0.10);
+  --quadretti-bold: oklch(0.50 0.20 257 / 0.22);
+
+  --radius: 0.65rem;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/40;
+  }
+  html {
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv11";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    /* Persistent quadretti background — the soul of the design */
+    background-image:
+      linear-gradient(to right,  var(--quadretti) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--quadretti) 1px, transparent 1px);
+    background-size: 28px 28px;
+    background-attachment: fixed;
+  }
+  ::selection {
+    background: var(--saffron);
+    color: var(--ink);
+  }
+  a { color: inherit; }
+
+  h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.025em; }
+}
+
+@layer utilities {
+  /* — Type families — */
+  .font-display { font-family: var(--font-display); letter-spacing: -0.025em; }
+  .font-hand    { font-family: var(--font-hand); }
+  .font-mono    { font-family: var(--font-mono); }
+
+  /* — Quadretti backgrounds (extra-emphasis variants) — */
+  .bg-quadretti {
+    background-color: var(--paper);
+    background-image:
+      linear-gradient(to right,  var(--quadretti) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--quadretti) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+  .bg-quadretti-soft {
+    background-color: var(--paper-tint);
+    background-image:
+      linear-gradient(to right,  var(--quadretti) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--quadretti) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+  .bg-quadretti-bold {
+    background-color: var(--paper);
+    background-image:
+      linear-gradient(to right,  var(--quadretti-bold) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--quadretti-bold) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+  .bg-righe {
+    /* horizontal ruled paper — for "note" cards */
+    background-color: var(--paper);
+    background-image: linear-gradient(to bottom, transparent 27px, var(--quadretti) 28px);
+    background-size: 100% 28px;
+  }
+
+  /* — Sticker — slightly rotated card with chunky offset shadow */
+  .sticker {
+    position: relative;
+    box-shadow: 6px 6px 0 0 var(--ink);
+    border: 1.5px solid var(--ink);
+    background: var(--paper);
+    transition: transform 320ms cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 320ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .sticker:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 9px 9px 0 0 var(--ink);
+  }
+  .sticker-press:active {
+    transform: translate(3px, 3px);
+    box-shadow: 2px 2px 0 0 var(--ink);
+  }
+  .sticker-blu     { box-shadow: 6px 6px 0 0 var(--blu-deep); }
+  .sticker-saffron { box-shadow: 6px 6px 0 0 var(--saffron-deep); }
+  .sticker-corallo { box-shadow: 6px 6px 0 0 var(--corallo-deep); }
+  .sticker-menta   { box-shadow: 6px 6px 0 0 var(--menta-deep); }
+  .sticker-rosa    { box-shadow: 6px 6px 0 0 var(--rosa-deep); }
+
+  .tilt-l  { transform: rotate(-2deg); }
+  .tilt-l:hover { transform: rotate(-2deg) translate(-2px, -2px); }
+  .tilt-r  { transform: rotate(2deg); }
+  .tilt-r:hover { transform: rotate(2deg) translate(-2px, -2px); }
+  .tilt-r2 { transform: rotate(-1deg); }
+
+  /* — Marker highlight — saffron pass behind a word */
+  .marker {
+    background-image: linear-gradient(180deg, transparent 50%, var(--saffron) 50%);
+    background-repeat: no-repeat;
+    background-size: 100% 92%;
+    padding: 0 0.12em;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+  .marker-corallo {
+    background-image: linear-gradient(180deg, transparent 50%, color-mix(in oklch, var(--corallo) 65%, white) 50%);
+  }
+  .marker-menta {
+    background-image: linear-gradient(180deg, transparent 50%, color-mix(in oklch, var(--menta) 65%, white) 50%);
+  }
+  .marker-rosa {
+    background-image: linear-gradient(180deg, transparent 50%, color-mix(in oklch, var(--rosa) 50%, white) 50%);
+  }
+
+  /* — Hand-drawn underline (animated draw on hover) — */
+  .underline-hand {
+    position: relative;
+    display: inline-block;
+  }
+  .underline-hand::after {
+    content: "";
+    position: absolute;
+    left: -2%;
+    right: -2%;
+    bottom: -0.18em;
+    height: 0.42em;
+    background: no-repeat center/100% 100%
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 12' preserveAspectRatio='none'><path d='M2 8 C 30 2, 60 11, 90 6 S 160 3, 198 7' fill='none' stroke='%23E2A800' stroke-width='3' stroke-linecap='round'/></svg>");
+    transform: scaleX(1);
+    transform-origin: left center;
+    transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+  }
+  .underline-hand-blu::after {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 12' preserveAspectRatio='none'><path d='M2 8 C 30 2, 60 11, 90 6 S 160 3, 198 7' fill='none' stroke='%23274BD8' stroke-width='3' stroke-linecap='round'/></svg>");
+  }
+  .underline-hand-corallo::after {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 12' preserveAspectRatio='none'><path d='M2 8 C 30 2, 60 11, 90 6 S 160 3, 198 7' fill='none' stroke='%23E25A1F' stroke-width='3' stroke-linecap='round'/></svg>");
+  }
+  .draw-on-hover::after {
+    transform: scaleX(0);
+  }
+  .draw-on-hover:hover::after {
+    transform: scaleX(1);
+  }
+
+  /* — Hand-drawn circle around something — */
+  .circled {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.12em 0.45em;
+  }
+  .circled::before {
+    content: "";
+    position: absolute;
+    inset: -0.18em -0.32em;
+    border-radius: 50%;
+    background: no-repeat center/100% 100%
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 60'><ellipse cx='50' cy='30' rx='46' ry='25' fill='none' stroke='%23E25A1F' stroke-width='2.4' stroke-linecap='round' stroke-dasharray='2 0' transform='rotate(-3 50 30)'/></svg>");
+    pointer-events: none;
+  }
+
+  /* — Wobble on hover (subtle playful tilt) — */
+  .wobble { transition: transform 260ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+  .wobble:hover { transform: rotate(-1.2deg) translateY(-2px); }
+
+  /* — Stamp (rough dashed border, like a passport stamp) — */
+  .stamp {
+    border: 2.5px solid currentColor;
+    padding: 0.3em 0.85em;
+    transform: rotate(-3deg);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-weight: 600;
+  }
+
+  /* — Tracking utilities — */
+  .tracking-caps { letter-spacing: 0.16em; text-transform: uppercase; }
+  .tracking-caps-tight { letter-spacing: 0.10em; text-transform: uppercase; }
+
+  /* — Marquee (ribbon) — */
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  .animate-marquee {
+    animation: marquee 50s linear infinite;
+  }
+
+  /* — Live pulse dot — */
+  @keyframes live-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%      { opacity: 0.35; transform: scale(0.7); }
+  }
+  .animate-live { animation: live-pulse 1.6s ease-in-out infinite; }
+
+  /* — Floating ornament — */
+  @keyframes float-y {
+    0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); }
+    50%      { transform: translateY(-6px) rotate(var(--r, 0deg)); }
+  }
+  .animate-float { animation: float-y 4.2s ease-in-out infinite; }
+
+  /* — Spin slowly — */
+  @keyframes slow-spin {
+    from { transform: rotate(0); }
+    to   { transform: rotate(360deg); }
+  }
+  .animate-slow-spin { animation: slow-spin 28s linear infinite; }
+
+  /* — Page-load rise — */
+  @keyframes ed-rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .ed-rise { animation: ed-rise 800ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .ed-rise-1 { animation-delay: 80ms; }
+  .ed-rise-2 { animation-delay: 200ms; }
+  .ed-rise-3 { animation-delay: 340ms; }
+  .ed-rise-4 { animation-delay: 500ms; }
+  .ed-rise-5 { animation-delay: 680ms; }
+  @media (prefers-reduced-motion: reduce) {
+    .ed-rise, .animate-marquee, .animate-live, .animate-float, .animate-slow-spin {
+      animation: none;
+    }
+  }
+
+  /* — Hide scrollbars — */
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { scrollbar-width: none; -ms-overflow-style: none; }
+
+  /* — Chip / pill — */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.28rem 0.7rem;
+    border-radius: 999px;
+    border: 1.5px solid var(--ink);
+    background: var(--paper);
+    font-weight: 500;
+    font-size: 0.78rem;
+    line-height: 1;
+  }
+
+  /* — Number badge (like a circled exam question number) — */
+  .num-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 50%;
+    border: 2px solid var(--ink);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.2rem;
+    background: var(--paper);
+  }
+}
