@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { FadeIn } from "@/components/fade-in";
-import { currentEdition } from "@/data/edition";
+import {
+  currentEdition,
+  currentEditionVenueNames,
+} from "@/data/edition";
 
 export const metadata: Metadata = {
   title: "Registrazione",
@@ -46,20 +49,21 @@ export default function RegistrazionePage() {
                 <ol className="mt-6 space-y-4">
                   <Step n={1} label="Compili il modulo" text="Cinque campi base: nome, email, scuola, classe, livello d'inglese." />
                   <Step n={2} label="Ricevi conferma" text={`Entro ${deadline} alla mail che indichi.`} />
-                  <Step n={3} label="Ti presenti" text={`${currentEdition.eventDateDisplay.replace(" alle 4:00pm", " alle 16:00")}, presso ${currentEdition.venue.name}.`} />
+                  <Step n={3} label="Ti presenti" text={`${currentEdition.eventDateDisplay}, in contemporanea nelle sedi di ${currentEditionVenueNames}.`} />
                 </ol>
 
                 <div className="mt-8 rounded-2xl border-[1.5px] border-corallo bg-paper p-5">
                   <span className="inline-flex items-center gap-1.5 text-[12px] uppercase tracking-caps-tight font-semibold text-corallo">
                     <span className="font-display text-base leading-none">✦</span>
-                    Non puoi venire a Teramo?
+                    Due sedi disponibili
                   </span>
                   <p className="mt-3 text-[14.5px] leading-relaxed text-ink-soft">
-                    Scrivi a{" "}
+                    La prova si svolge nelle sedi di {currentEditionVenueNames}.
+                    Per dubbi sulla sede scrivi a{" "}
                     <a href={`mailto:${currentEdition.contactEmail}`} className="font-semibold text-blu underline-hand draw-on-hover underline-hand-blu">
                       {currentEdition.contactEmail}
                     </a>
-                    : ricevi un link Google Meet per partecipare da remoto.
+                    .
                   </p>
                 </div>
 
@@ -78,7 +82,7 @@ export default function RegistrazionePage() {
 
                   <div className="flex flex-wrap items-center justify-between gap-3 border-b-[1.5px] border-dashed border-ink/30 pb-5">
                     <p className="text-[12px] uppercase tracking-caps-tight font-semibold text-blu">
-                      Modulo di registrazione · 2025
+                      Modulo di registrazione · {currentEdition.year}
                     </p>
                     <p className="font-hand text-xl text-corallo leading-none">5 campi · 2 minuti</p>
                   </div>

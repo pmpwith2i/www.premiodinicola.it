@@ -1,6 +1,9 @@
 import Link from "next/link";
 import { sponsors } from "@/data/sponsors";
-import { currentEdition } from "@/data/edition";
+import {
+  currentEdition,
+  currentEditionVenueCities,
+} from "@/data/edition";
 
 export function Colophon() {
   return (
@@ -16,7 +19,7 @@ export function Colophon() {
             <div className="md:col-span-7">
               <p className="chip border-blu text-blu bg-paper">
                 <span className="h-1.5 w-1.5 rounded-full bg-blu" />
-                Premio Di Nicola — 17ª edizione
+                Premio Di Nicola — {currentEdition.numberLabel}
               </p>
               <h2 className="mt-5 font-display text-[clamp(2.4rem,7vw,5rem)] font-bold leading-[0.95] tracking-tight">
                 Si può{" "}
@@ -73,7 +76,7 @@ export function Colophon() {
                       </a>
                     </li>
                     <li className="text-ink-soft">Vincenzo Di Nicola</li>
-                    <li className="text-ink-soft">Teramo · Abruzzo</li>
+                    <li className="text-ink-soft">{currentEditionVenueCities} · Abruzzo</li>
                   </ul>
                 </div>
               </div>
@@ -126,7 +129,7 @@ export function Colophon() {
             © {currentEdition.copyrightYear} Vincenzo Di Nicola. Tutti i diritti riservati.
           </p>
           <p className="font-hand text-xl leading-none text-saffron">
-            Italia · Abruzzo · 2025
+            Italia · Abruzzo · {currentEdition.year}
           </p>
         </div>
       </div>

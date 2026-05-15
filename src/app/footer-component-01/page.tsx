@@ -9,7 +9,7 @@ const FooterPage = () => {
         { name: 'IIS Alessandrini di Teramo', url: 'https://www.iisteramo.edu.it/' },
       ]}
       contactEmail='vincenzo@live.com'
-      copyrightYear={2025}
+      copyrightYear={2026}
     />
   )
 }

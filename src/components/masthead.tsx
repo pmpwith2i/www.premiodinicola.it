@@ -3,7 +3,10 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { currentEdition } from "@/data/edition";
+import {
+  currentEdition,
+  currentEditionVenueCities,
+} from "@/data/edition";
 
 const nav = [
   { href: "/partecipazione", label: "Partecipazione" },
@@ -38,13 +41,13 @@ export function Masthead() {
         <div className="mx-auto flex max-w-[1320px] items-center justify-between gap-4 px-5 py-1.5 text-[11px] font-medium sm:px-8">
           <span className="hidden items-center gap-2 sm:flex">
             <span aria-hidden className="inline-block h-1.5 w-1.5 rounded-full bg-saffron animate-live" />
-            17ª edizione · 29 maggio 2025
+            {currentEdition.numberLabel} · {currentEdition.eventDateDisplay}
           </span>
           <span className="font-hand text-base leading-none text-saffron">
             Si può volare alto ✦
           </span>
           <span className="hidden md:inline opacity-80">
-            Teramo · Abruzzo
+            {currentEditionVenueCities} · Abruzzo
           </span>
         </div>
       </div>
@@ -58,7 +61,7 @@ export function Masthead() {
               aria-hidden
               className="relative inline-flex h-10 w-10 items-center justify-center rounded-xl bg-blu text-paper font-display text-base font-bold shadow-[3px_3px_0_var(--ink)] transition-transform duration-300 group-hover:rotate-[-6deg]"
             >
-              17
+              {currentEdition.numberArabic}
               <span className="absolute -top-1 -right-1 h-3 w-3 rounded-full bg-saffron border border-ink" />
             </span>
             <span className="hidden sm:flex flex-col leading-none">
@@ -66,7 +69,7 @@ export function Masthead() {
                 Premio Di Nicola
               </span>
               <span className="text-[11px] text-ink-mute mt-0.5">
-                Matematica · Abruzzo · 2025
+                Matematica · Abruzzo · {currentEdition.year}
               </span>
             </span>
           </Link>
@@ -143,7 +146,7 @@ export function Masthead() {
             href="/registrazione"
             className="mt-4 flex items-center justify-between rounded-xl border-[1.5px] border-ink bg-saffron px-4 py-3.5 font-display text-lg font-bold shadow-[3px_3px_0_var(--ink)]"
           >
-            <span>Iscriviti — entro 28 mag</span>
+            <span>Iscriviti — entro 5 giu</span>
             <span aria-hidden className="text-xl">→</span>
           </Link>
           <p className="mt-4 text-center font-hand text-lg text-blu">

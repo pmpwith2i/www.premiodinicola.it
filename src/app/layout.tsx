@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Bricolage_Grotesque, Geist, Geist_Mono, Caveat } from "next/font/google";
 import { Masthead } from "@/components/masthead";
 import { Colophon } from "@/components/colophon";
+import { currentEdition } from "@/data/edition";
 import "./globals.css";
 
 const bricolage = Bricolage_Grotesque({
@@ -31,7 +32,7 @@ const caveat = Caveat({
 
 export const metadata: Metadata = {
   title: {
-    default: "Premio Di Nicola — 17ª edizione",
+    default: `Premio Di Nicola — ${currentEdition.numberLabel}`,
     template: "%s · Premio Di Nicola",
   },
   description:

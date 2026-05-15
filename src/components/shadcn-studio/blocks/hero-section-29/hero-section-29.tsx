@@ -48,7 +48,7 @@ const HeroSection = ({ title, editionLabel, venue, remoteNote, children }: HeroS
             </p>
             {remoteNote && (
               <p className='text-foreground/50 text-sm'>
-                opzionalmente online su <strong>Google Meet</strong>
+                {remoteNote}
               </p>
             )}
           </MotionPreset>

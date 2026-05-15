@@ -4,9 +4,9 @@ const HeroSectionPage = () => {
   return (
     <HeroSection
       title='Premio Di Nicola'
-      editionLabel='Edizione XVII — giovedì 29 Maggio 2025 alle 4:00pm'
+      editionLabel='Edizione XVIII — sabato 6 Giugno 2026 alle 10:00am'
       venue={{
-        name: 'IIS Alessandrini Marino di Teramo',
+        name: 'IIS Alessandrini-Marino di Teramo e Liceo Scientifico Galileo Galilei di Pescara',
         mapsUrl: '#',
       }}
     />

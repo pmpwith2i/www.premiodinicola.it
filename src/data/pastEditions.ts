@@ -2,21 +2,35 @@ export interface Winner {
   name: string;
   school: string;
   class: string;
-  photo: string;
+  photo?: string;
 }
 
 export interface PastEdition {
   academicYear: string;
   eventDate: string;
-  first: Winner;
-  seconds: Winner[];
+  first?: Winner;
+  seconds?: Winner[];
   rosa?: Winner[];
   imprenditorialita?: Winner;
   groupPhoto?: string;
-  groupPhotoLabel: string;
+  groupPhotoLabel?: string;
+  placeholder?: {
+    title: string;
+    description: string;
+  };
 }
 
 export const pastEditions: PastEdition[] = [
+  {
+    academicYear: "2024-2025",
+    eventDate: "29 Maggio 2025",
+    placeholder: {
+      title: "Foto in arrivo",
+      description:
+        "L'edizione 2024-2025 è stata aggiunta all'archivio. Foto e dettagli verranno pubblicati appena saranno disponibili.",
+    },
+    groupPhotoLabel: "foto non disponibili (2024-2025)",
+  },
   {
     academicYear: "2023-2024",
     eventDate: "8 Giugno 2024",
@@ -462,7 +476,7 @@ export const pastEditions: PastEdition[] = [
 
 export const philosophyText = [
   "Mi chiamo Vincenzo Di Nicola, e sono un ex studente del Liceo Scientifico Einstein di Teramo, Maturità 1998.",
-  "Da 17 anni porto avanti questo piccolo premio rivolto a studenti abruzzesi di scuola superiore, dal primo al quinto anno. È una prova di Matematica e cultura generale in Inglese, basata sui test che gli studenti americani fanno ogni anno per accedere alle università. Non richiede competenze specifiche: solo logica, attenzione, e soprattuto desiderio di cimentarsi in una nuova sfida.",
+  "Da 18 edizioni porto avanti questo piccolo premio rivolto a studenti abruzzesi di scuola superiore, dal primo al quinto anno. È una prova di Matematica e cultura generale in Inglese, basata sui test che gli studenti americani fanno ogni anno per accedere alle università. Non richiede competenze specifiche: solo logica, attenzione, e soprattuto desiderio di cimentarsi in una nuova sfida.",
   "Perché lo faccio? Da ragazzo ho avuto la fortuna di avere un'ottima istruzione di scuola superiore in Italia, e lavorando negli anni in USA e Cina mi sono reso conto di quanto sia formativa a livello globale. Quello che però ho notato che spesso manca ai ragazzi italiani è determinazione e consapevolezza nelle proprie capacità.",
-  "Il premio è ora giunto alla sua diciassettesima edizione. In questi anni ho avuto modo di conoscere tanti ragazzi e apprezzare i loro progressi. E soprattutto sono stato felice di aiutarli a far emergere il proprio potenziale, a non farsi spaventare di fronte alle opportunità di oggi e a che capire che sì, si può volare alto. Questa è la filosofia del premio.",
+  "Il premio è ora giunto alla sua diciottesima edizione. In questi anni ho avuto modo di conoscere tanti ragazzi e apprezzare i loro progressi. E soprattutto sono stato felice di aiutarli a far emergere il proprio potenziale, a non farsi spaventare di fronte alle opportunità di oggi e a che capire che sì, si può volare alto. Questa è la filosofia del premio.",
 ];

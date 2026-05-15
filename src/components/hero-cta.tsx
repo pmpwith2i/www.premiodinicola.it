@@ -1,7 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { currentEdition, isRegistrationOpen, isEventPassed } from "@/data/edition";
+import {
+  currentEdition,
+  currentEditionVenueCities,
+  isEventPassed,
+  isRegistrationOpen,
+} from "@/data/edition";
 
 export function HeroCta() {
   if (isRegistrationOpen()) {
@@ -25,7 +30,7 @@ export function HeroCta() {
           </span>
         </Link>
         <p className="text-[12px] uppercase tracking-caps-tight font-semibold text-ink-mute">
-          Gratuito · Posti limitati · {currentEdition.venue.address}
+          Gratuito · Posti limitati · {currentEditionVenueCities}
         </p>
       </div>
     );

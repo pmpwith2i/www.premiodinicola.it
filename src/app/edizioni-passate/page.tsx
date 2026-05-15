@@ -4,6 +4,7 @@ import {
   EditionCarousel,
   type CarouselSlide,
 } from "@/components/edition-carousel";
+import { currentEdition } from "@/data/edition";
 import { pastEditions, type PastEdition, type Winner } from "@/data/pastEditions";
 import { olimpiadi } from "@/data/olimpiadi";
 
@@ -22,41 +23,54 @@ const tones = [
 function buildSlides(edition: PastEdition): CarouselSlide[] {
   const slides: CarouselSlide[] = [];
 
-  const winnerSlide = (w: Winner, label: string, color?: string): CarouselSlide => ({
-    src: w.photo,
-    alt: w.name,
-    caption: w.name,
-    subcaption: `${w.school} — ${w.class}`,
-    label,
-    labelColor: color,
-  });
+  const winnerSlide = (
+    w: Winner,
+    label: string,
+    color?: string
+  ): CarouselSlide | null => {
+    if (!w.photo) return null;
 
-  slides.push(winnerSlide(edition.first, "1° classificato", "text-corallo"));
-  edition.seconds.forEach((s, i) =>
-    slides.push(
-      winnerSlide(
-        s,
-        edition.seconds.length > 1 ? `2° ex-aequo (${i + 1})` : "2° classificato",
-        "text-blu"
-      )
-    )
-  );
-  edition.rosa?.forEach((r) =>
-    slides.push(winnerSlide(r, "Premio Rosa", "text-rosa-deep"))
-  );
-  if (edition.imprenditorialita) {
-    slides.push(
-      winnerSlide(
-        edition.imprenditorialita,
-        "Imprenditorialità",
-        "text-corallo"
-      )
+    return {
+      src: w.photo,
+      alt: w.name,
+      caption: w.name,
+      subcaption: `${w.school} — ${w.class}`,
+      label,
+      labelColor: color,
+    };
+  };
+
+  if (edition.first) {
+    const slide = winnerSlide(edition.first, "1° classificato", "text-corallo");
+    if (slide) slides.push(slide);
+  }
+  const secondWinners = edition.seconds ?? [];
+  secondWinners.forEach((s, i) => {
+    const slide = winnerSlide(
+      s,
+      secondWinners.length > 1
+        ? `2° ex-aequo (${i + 1})`
+        : "2° classificato",
+      "text-blu"
     );
+    if (slide) slides.push(slide);
+  });
+  edition.rosa?.forEach((r) => {
+    const slide = winnerSlide(r, "Premio Rosa", "text-rosa-deep");
+    if (slide) slides.push(slide);
+  });
+  if (edition.imprenditorialita) {
+    const slide = winnerSlide(
+      edition.imprenditorialita,
+      "Imprenditorialità",
+      "text-corallo"
+    );
+    if (slide) slides.push(slide);
   }
   if (edition.groupPhoto) {
     slides.push({
       src: edition.groupPhoto,
-      alt: edition.groupPhotoLabel,
+      alt: edition.groupPhotoLabel ?? `Foto di gruppo ${edition.academicYear}`,
       caption: "Foto di gruppo",
       subcaption: edition.academicYear,
     });
@@ -67,6 +81,15 @@ function buildSlides(edition: PastEdition): CarouselSlide[] {
 
 export default function EdizioniPassatePage() {
   const total = pastEditions.length;
+  const archivedWinners = pastEditions.reduce(
+    (sum, edition) =>
+      sum +
+      (edition.first ? 1 : 0) +
+      (edition.seconds?.length ?? 0) +
+      (edition.rosa?.length ?? 0) +
+      (edition.imprenditorialita ? 1 : 0),
+    0
+  );
 
   return (
     <>
@@ -77,21 +100,21 @@ export default function EdizioniPassatePage() {
           <FadeIn>
             <span className="chip border-menta-deep text-menta-deep">04 / Vincitori</span>
             <h1 className="mt-6 font-display text-[clamp(2.6rem,9vw,6rem)] font-bold leading-[0.95] tracking-tight text-ink">
-              <span className="block">17 anni di</span>
+              <span className="block">18 edizioni di</span>
               <span className="block">
                 <span className="marker-menta">studenti</span>{" "}
                 che ce l&apos;hanno fatta.
               </span>
             </h1>
             <p className="mt-7 max-w-2xl text-[17px] leading-relaxed text-ink-soft md:text-[19px]">
-              Tutti i vincitori delle edizioni passate, con foto, scuola e
-              classe. Un piccolo album, dal 2008 a oggi.
+              Tutti i vincitori delle edizioni passate, con foto quando
+              disponibili, scuola e classe. Un piccolo album, dal 2008 a oggi.
             </p>
 
             <dl className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-5">
-              <Stat label="Edizioni" value={`${total + 1}`} hand="dal 2008" tone="blu" />
-              <Stat label="Prima edizione" value="2009" hand="il via" tone="saffron" />
-              <Stat label="Vincitori archiviati" value={`${total * 4}+`} hand="circa" tone="menta" />
+              <Stat label="Edizioni" value={`${currentEdition.numberArabic}`} hand="dal 2008" tone="blu" />
+              <Stat label="Prima edizione" value="2008-09" hand="il via" tone="saffron" />
+              <Stat label="Vincitori archiviati" value={`${archivedWinners}`} hand="in archivio" tone="menta" />
               <Stat label="Sede storica" value="Teramo" hand="Abruzzo" tone="corallo" />
             </dl>
           </FadeIn>
@@ -103,9 +126,15 @@ export default function EdizioniPassatePage() {
         <div className="mx-auto max-w-[1320px] px-5 sm:px-8 py-16 md:py-20">
           <div className="space-y-10 md:space-y-14">
             {pastEditions.map((edition, idx) => {
-              const editionNumber = total - idx + 1; // current = 17, then 16, 15, …
+              const editionNumber = total - idx; // current = 18, then 17, 16, ...
               const slides = buildSlides(edition);
               const tone = tones[idx % tones.length];
+              const secondWinners = edition.seconds ?? [];
+              const hasWinnerRoster =
+                Boolean(edition.first) ||
+                secondWinners.length > 0 ||
+                Boolean(edition.rosa?.length) ||
+                Boolean(edition.imprenditorialita);
 
               return (
                 <FadeIn key={edition.academicYear}>
@@ -133,43 +162,59 @@ export default function EdizioniPassatePage() {
                     {/* Winners + carousel */}
                     <div className="md:col-span-9">
                       {/* Winner roster */}
-                      <dl className="grid gap-4 sm:grid-cols-2 md:gap-5">
-                        <WinnerCard label="1° classificato" winner={edition.first} accent="text-corallo" border="border-corallo" />
-                        {edition.seconds.map((w, i) => (
-                          <WinnerCard
-                            key={w.name}
-                            label={
-                              edition.seconds.length > 1
-                                ? `2° ex-aequo (${i + 1})`
-                                : "2° classificato"
-                            }
-                            winner={w}
-                            accent="text-blu"
-                            border="border-blu"
-                          />
-                        ))}
-                        {edition.rosa?.map((w, i) => (
-                          <WinnerCard
-                            key={`rosa-${i}-${w.name}`}
-                            label="Premio Rosa"
-                            winner={w}
-                            accent="text-rosa-deep"
-                            border="border-rosa"
-                          />
-                        ))}
-                        {edition.imprenditorialita && (
-                          <WinnerCard
-                            label="Imprenditorialità"
-                            winner={edition.imprenditorialita}
-                            accent="text-corallo"
-                            border="border-corallo"
-                          />
-                        )}
-                      </dl>
+                      {hasWinnerRoster ? (
+                        <dl className="grid gap-4 sm:grid-cols-2 md:gap-5">
+                          {edition.first && (
+                            <WinnerCard label="1° classificato" winner={edition.first} accent="text-corallo" border="border-corallo" />
+                          )}
+                          {secondWinners.map((w, i) => (
+                            <WinnerCard
+                              key={w.name}
+                              label={
+                                secondWinners.length > 1
+                                  ? `2° ex-aequo (${i + 1})`
+                                  : "2° classificato"
+                              }
+                              winner={w}
+                              accent="text-blu"
+                              border="border-blu"
+                            />
+                          ))}
+                          {edition.rosa?.map((w, i) => (
+                            <WinnerCard
+                              key={`rosa-${i}-${w.name}`}
+                              label="Premio Rosa"
+                              winner={w}
+                              accent="text-rosa-deep"
+                              border="border-rosa"
+                            />
+                          ))}
+                          {edition.imprenditorialita && (
+                            <WinnerCard
+                              label="Imprenditorialità"
+                              winner={edition.imprenditorialita}
+                              accent="text-corallo"
+                              border="border-corallo"
+                            />
+                          )}
+                        </dl>
+                      ) : (
+                        <EditionPlaceholder
+                          title={edition.placeholder?.title ?? "Archivio in aggiornamento"}
+                          description={
+                            edition.placeholder?.description ??
+                            "Le informazioni di questa edizione verranno pubblicate appena disponibili."
+                          }
+                        />
+                      )}
 
                       {/* Photo carousel */}
                       <div className="mt-7 border-t border-dashed border-ink/25 pt-6">
-                        <EditionCarousel slides={slides} />
+                        {slides.length > 0 ? (
+                          <EditionCarousel slides={slides} />
+                        ) : (
+                          <PhotoPlaceholder academicYear={edition.academicYear} />
+                        )}
                       </div>
                     </div>
                   </article>
@@ -212,7 +257,6 @@ export default function EdizioniPassatePage() {
                   <p className="mt-5 text-[15px] leading-[1.8] text-ink md:text-[16px]">
                     {entry.description}
                   </p>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={entry.rankingImage}
                     alt={`Classifica Finale Squadre ${entry.year}`}
@@ -225,6 +269,43 @@ export default function EdizioniPassatePage() {
         </div>
       </section>
     </>
+  );
+}
+
+function EditionPlaceholder({
+  title,
+  description,
+}: {
+  title: string;
+  description: string;
+}) {
+  return (
+    <div className="rounded-2xl border-[1.5px] border-dashed border-ink/35 bg-paper/70 p-5 md:p-6">
+      <span className="text-[10.5px] uppercase tracking-caps-tight font-semibold text-blu">
+        Archivio
+      </span>
+      <p className="mt-2 font-display text-2xl font-semibold leading-tight text-ink">
+        {title}
+      </p>
+      <p className="mt-2 max-w-2xl text-[14.5px] leading-relaxed text-ink-soft">
+        {description}
+      </p>
+    </div>
+  );
+}
+
+function PhotoPlaceholder({ academicYear }: { academicYear: string }) {
+  return (
+    <div className="flex min-h-40 items-center justify-center rounded-2xl border-[1.5px] border-dashed border-ink/30 bg-paper/65 px-5 py-8 text-center">
+      <div>
+        <p className="font-display text-2xl font-semibold leading-tight text-ink">
+          Nessuna foto disponibile
+        </p>
+        <p className="mt-2 text-[12px] uppercase tracking-caps-tight font-semibold text-ink-mute">
+          edizione {academicYear}
+        </p>
+      </div>
+    </div>
   );
 }
 

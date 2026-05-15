@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { FadeIn } from "@/components/fade-in";
-import { currentEdition } from "@/data/edition";
+import { currentEdition, currentEditionVenueNames } from "@/data/edition";
 
 export const metadata: Metadata = {
   title: "Partecipazione",
@@ -144,7 +144,8 @@ export default function PartecipaPage() {
           >
             <p className="text-[17px] leading-[1.7] text-ink-soft md:text-[18px]">
               Due parti: un test scritto di matematica e, per i meglio
-              classificati, un colloquio in inglese. Tutto in due giornate.
+              classificati, un colloquio in inglese. La prova scritta del 2026
+              si tiene in contemporanea nelle sedi di {currentEditionVenueNames}.
             </p>
 
             <div className="mt-10 grid gap-6 md:grid-cols-2 md:gap-8">
@@ -154,6 +155,8 @@ export default function PartecipaPage() {
                   title="Test di matematica"
                   subtitle="Scritto · in inglese"
                   bullets={[
+                    { label: "Quando", value: currentEdition.eventDateDisplay },
+                    { label: "Dove", value: currentEditionVenueNames },
                     { label: "Durata", value: "1 ora" },
                     { label: "Strumenti", value: "matita e gomma — niente calcolatrice" },
                     { label: "Stile", value: "tipo SAT (test USA per l'università)" },
@@ -173,7 +176,15 @@ export default function PartecipaPage() {
                     { label: "Quando", value: currentEdition.oralExam.date },
                     { label: "Dove", value: currentEdition.oralExam.venue },
                   ]}
-                  link={{ label: "Indicazioni stradali", href: currentEdition.oralExam.mapsUrl, external: true }}
+                  link={
+                    currentEdition.oralExam.mapsUrl
+                      ? {
+                          label: "Indicazioni stradali",
+                          href: currentEdition.oralExam.mapsUrl,
+                          external: true,
+                        }
+                      : undefined
+                  }
                   accent="bg-corallo text-paper"
                   shadow="sticker-corallo"
                 />

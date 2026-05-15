@@ -1,7 +1,10 @@
 import Link from "next/link";
 import { HeroCta } from "@/components/hero-cta";
 import { FadeIn } from "@/components/fade-in";
-import { currentEdition } from "@/data/edition";
+import {
+  currentEdition,
+  currentEditionVenueCities,
+} from "@/data/edition";
 import { philosophyText, pastEditions } from "@/data/pastEditions";
 import { prizes } from "@/data/prizes";
 
@@ -75,13 +78,13 @@ export default function Home() {
           <div className="ed-rise ed-rise-1 flex flex-wrap items-center gap-3">
             <span className="chip border-blu text-blu">
               <span className="h-1.5 w-1.5 rounded-full bg-blu animate-live" />
-              17ª edizione
+              {currentEdition.numberLabel}
             </span>
             <span className="chip border-ink/30 text-ink-soft">
-              {currentEdition.eventDateDisplay.replace("alle 4:00pm", "· 16:00")}
+              {currentEdition.eventDateDisplay.replace(" alle ", " · ")}
             </span>
             <span className="chip border-ink/30 text-ink-soft hidden sm:inline-flex">
-              {currentEdition.venue.name}
+              {currentEditionVenueCities}
             </span>
           </div>
 
@@ -112,6 +115,23 @@ export default function Home() {
               <div className="ed-rise ed-rise-4 mt-8">
                 <HeroCta />
               </div>
+
+              <div className="ed-rise ed-rise-4 mt-5 flex flex-wrap items-center gap-2">
+                <span className="chip border-corallo text-corallo bg-paper">
+                  Due sedi in contemporanea
+                </span>
+                {currentEdition.venues.map((venue) => (
+                  <a
+                    key={venue.name}
+                    href={venue.mapsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="chip border-ink/25 text-ink-soft bg-paper hover:text-blu transition-colors"
+                  >
+                    {venue.name}
+                  </a>
+                ))}
+              </div>
             </div>
 
             {/* Sticker badge — replaces the funereal Roman numeral */}
@@ -120,7 +140,7 @@ export default function Home() {
                 <div className="sticker tilt-r relative inline-flex flex-col items-center justify-center rounded-3xl bg-saffron px-8 py-7 text-center">
                   <span className="font-hand text-2xl leading-none text-ink">edizione</span>
                   <span className="font-display text-[7rem] leading-none font-bold tracking-tight text-ink">
-                    17<span className="text-corallo">ª</span>
+                    {currentEdition.numberArabic}<span className="text-corallo">ª</span>
                   </span>
                   <span className="mt-2 text-[12px] uppercase tracking-caps-tight font-semibold text-ink-soft">
                     dal 2008
@@ -133,7 +153,7 @@ export default function Home() {
                   ✦
                 </span>
                 <span className="absolute -bottom-4 -right-3 font-hand text-2xl text-blu rotate-[6deg]">
-                  Teramo!
+                  2 sedi!
                 </span>
               </div>
             </div>
@@ -142,7 +162,7 @@ export default function Home() {
           {/* Stats row */}
           <div className="ed-rise ed-rise-5 mt-14 grid grid-cols-2 gap-3 md:mt-20 md:grid-cols-4 md:gap-4">
             <Stat number={`€${totalPrize.toLocaleString("it-IT")}`} label="Montepremi totale" hand="in palio" tone="blu" />
-            <Stat number={`${pastEditions.length + 1}`} label="Edizioni" hand={`dal 2008`} tone="corallo" />
+            <Stat number={`${pastEditions.length + 1}`} label="Edizioni" hand="dal 2008" tone="corallo" />
             <Stat number="60′" label="Durata della prova" hand="un'ora secca" tone="saffron" />
             <Stat number="2" label="Lingue" hand="ita + eng" tone="menta" />
           </div>
@@ -161,11 +181,11 @@ export default function Home() {
                 <span aria-hidden className="text-saffron text-xl leading-none">÷</span>
                 <span>Abruzzo</span>
                 <span aria-hidden className="text-saffron text-xl leading-none">√</span>
-                <span>17ª edizione</span>
+                <span>{currentEdition.numberLabel}</span>
                 <span aria-hidden className="text-saffron text-xl leading-none">π</span>
                 <span>Si può volare alto</span>
                 <span aria-hidden className="text-saffron text-xl leading-none">∑</span>
-                <span>Teramo · 2025</span>
+                <span>{currentEditionVenueCities} · {currentEdition.year}</span>
                 <span aria-hidden className="text-saffron text-xl leading-none">±</span>
               </div>
             ))}
